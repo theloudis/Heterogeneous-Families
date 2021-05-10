@@ -22,7 +22,6 @@ global  do T stationary_wage_params bootstrap ...
 
 %   Switches 'do' and 'deliver' that control what parts of the code are executed:
 do.inference                                = 0 ;   %   do_inference = { 0 No ; 1 Do }
-do.ineq_sim_against_etacp                   = 0 ;   %   do_ineq_sim_against_etacp = { 0 No ; 1 Do }
 do.wu_krueger                               = 0 ;   %   do_wu_krueger = { 0 No ; 1 Do }
 do.welfare                                  = 0 ;   %   do_welfare = { 0 No ; 1 Do }
 

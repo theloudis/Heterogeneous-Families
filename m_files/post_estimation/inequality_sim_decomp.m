@@ -33,7 +33,7 @@
 
 %   Preliminary statements:
 global  vModelHat_c1 num_pref_rdraws num_pref_sims sd_trim_pref_draws ...
-        do stationary_wage_params T dDir vWageHat cme_estimates_1 ;
+        stationary_wage_params T dDir vWageHat cme_estimates_1 ;
    
 %   Request data and obtain average partial insurance and human wealth
 %   parameters. Note: I condition on pi~=0 and es~=0 to drop zero entries 
@@ -167,34 +167,23 @@ clearvars s
 %   the elasticity to non-positive values:
 ineq_vls_eta_c_p = -1.25:.0025:0 ;
 
-%   Simulate inequality over range for 'eta_c_p':
-if do.ineq_sim_against_etacp == 1 
-    
-    %   For simplicity and speed, this part of the code runs only when the
-    %   wage second moments are stationary:
-    if stationary_wage_params ~= 1
-        error("Inequality fit cannot run unless wages are stationary.")
-    end
-
-    %   Evaluate functions over range of eta_c_p:
-    ineq_vls_ph   = zeros(num_pref_sims,length(ineq_vls_eta_c_p),3);
-    ineq_vls_noph = zeros(num_pref_sims,length(ineq_vls_eta_c_p),3);
-    for ss=1:1:length(ineq_vls_eta_c_p)
-        [ineq_vls_ph(:,ss,1), ineq_vls_ph(:,ss,2), ineq_vls_ph(:,ss,3)] = ...
-            inequality_fit(simPrefDrawsMVN, PiDrawsEmp, EsDrawsEmp, CYDrawsNoHet, vWageHat, ineq_vls_eta_c_p(ss));
-        [ineq_vls_noph(:,ss,1), ineq_vls_noph(:,ss,2), ineq_vls_noph(:,ss,3)] = ...
-            inequality_fit(simPrefDrawsNoHet, PiDrawsEmp, EsDrawsEmp, CYDrawsNoHet, vWageHat, ineq_vls_eta_c_p(ss));
-        fprintf('Finished inequality simulation over eta_c_p value : %u\n',ss)
-    end
-    clearvars ss
-
-else
-    
-    load(strcat(dDir,'/exports/results/ineq_values'));
-    ineq_vls_ph     = ineq_vls(:,1:length(ineq_vls_eta_c_p),:);
-    ineq_vls_noph   = ineq_vls(:,(length(ineq_vls_eta_c_p)+1):2*length(ineq_vls_eta_c_p),:);
-    clearvars ineq_vls
+%   Simulate inequality over range for 'eta_c_p' (for simplicity and speed, 
+%   this part of the code runs only when the wage second moments are stationary):
+if stationary_wage_params ~= 1
+    error("Inequality fit cannot run unless wages are stationary.")
 end
+
+%   Evaluate functions over range of eta_c_p:
+ineq_vls_ph   = zeros(num_pref_sims,length(ineq_vls_eta_c_p),3);
+ineq_vls_noph = zeros(num_pref_sims,length(ineq_vls_eta_c_p),3);
+for ss=1:1:length(ineq_vls_eta_c_p)
+    [ineq_vls_ph(:,ss,1), ineq_vls_ph(:,ss,2), ineq_vls_ph(:,ss,3)] = ...
+        inequality_fit(simPrefDrawsMVN, PiDrawsEmp, EsDrawsEmp, CYDrawsNoHet, vWageHat, ineq_vls_eta_c_p(ss));
+	[ineq_vls_noph(:,ss,1), ineq_vls_noph(:,ss,2), ineq_vls_noph(:,ss,3)] = ...
+        inequality_fit(simPrefDrawsNoHet, PiDrawsEmp, EsDrawsEmp, CYDrawsNoHet, vWageHat, ineq_vls_eta_c_p(ss));
+    fprintf('Finished inequality simulation over eta_c_p value : %u\n',ss)
+end
+clearvars ss
 
 %   Generate total simulated inequality as the sum of consumption
 %   instability and permanent inequality. These matrices are of dimension 
