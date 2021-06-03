@@ -1,13 +1,13 @@
 # Heterogeneous-Families
 This repository contains the code that allows replication of my paper **Consumption Inequality across Heterogeneous Families**, 
-published at the _European Economic Review_. The paper uses consumption and wage data in the PSID in order to:
+published at the [_European Economic Review_](https://doi.org/10.1016/j.euroecorev.2021.103765). The paper uses consumption and wage data in the PSID in order to:
 * estimate consumption and labor supply preference heterogeneity across households in the US;
 * quantify the implications of preference heterogeneity for consumption inequality;
 * quantify the implications of preference heterogeneity for consumption partial insurance against permanent and transitory wage shocks.
 
 Apart from the purpose of replicating the paper, the code posted here may also be useful to researchers who want to operationalise and use the rich consumption data in the PSID after 1999.
 
-The journal website of the paper is here: TBD.
+The journal website of the paper is here: https://doi.org/10.1016/j.euroecorev.2021.103765.
 
 # Replication package details
 
@@ -18,7 +18,7 @@ The replication package has two main parts, the ```STATA``` part and the ```MATL
 
 The code is organized as follows:
 * ```HF00_masterfile.do``` sets the computer directories and calls all other do files sequentially. Researchers who want to run the ```STATA``` part of the code need only update the directories to reflect the replication folder on their computer and then run this file. The code runs in a couple of minutes if ```HF12_do_bootstrap.do``` (which obtains the bootstrap samples) is commented out. The rest of the code, including the structural estimation, should run without issues but without estimating standard errors / p-values. The code takes several hours and uses about ```60GB``` of memory if ```HF12_do_bootstrap.do``` is commented in.
-* ```HF01_extract_psid_interview.do``` and ```HF02_extract_psid_individual.do``` extract the PSID yearly family files and the cross-year individual file respectively and assemble the panel data. I do not include the raw data files but researchers who want to replicate this part of the code can download them free of charge from the PSID website at http://psidonline.isr.umich.edu.
+* ```HF01_extract_psid_interview.do``` and ```HF02_extract_psid_individual.do``` extract the PSID yearly family files and the cross-year individual file respectively and assemble the panel data. I do not include the raw data files but researchers who want to replicate this part of the code can download them free of charge from the [PSID website](http://psidonline.isr.umich.edu).
 * ```HF03_cpi_prices.do``` and ```HF04_selection.do``` merge the panel data with the consumer price index, minimum wages, and US state codes data and carry out baseline data cleaning and selection.
 * ```HF05_consumption_assets.do``` harmonizes the consumption and wealth data and produces ```consumption_assets.dta```. ```HF06_bootstrap_sample.do``` carries out the final sample selection and produces ```final_sample.dta```. Data files ```consumption_assets.dta``` and ```final_sample.dta``` are subsequently used in the rest of the program, so I provide these files to assist those researchers who may not want to download the raw data required earlier in the code.
 * ```HF07_first_stage.do``` performs the first stage regressions of wages, earnings, consumption on observables; ```HF08_pi_es.do``` estimates &pi;<sub>it</sub> and s<sub>jit</sub>; ```HF09_prepare_gmm.do``` exports the baseline conditional moments used in the structural estimation; ```HF10_m_error.do``` estimates the baseline wage, hours, and earnings measurement error; ```HF11_ratios.do``` estimates the ratios of outcomes used for symmetry of the Frisch elasticities.
